@@ -1,0 +1,14 @@
+Flask
+requests
+pandas
+numpy
+matplotlib
+yfinance
+yahoo_fin
+scikit-learn
+statsmodels
+tensorflow
+keras
+Lib/
+*.dll
+*.pyd
