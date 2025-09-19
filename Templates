@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock & Index Prediction Tool - Dark Theme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Deep dark background */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            color: #e2e8f0; /* Light gray text for contrast */
+        }
+        .header {
+            background-color: #2d3748; /* Slightly lighter dark header */
+            padding: 1.25rem 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* More pronounced shadow */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .header-title {
+            color: #ffffff;
+            font-size: 2rem; /* Slightly larger title */
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2.5rem; /* Increased padding */
+        }
+        .card {
+            background-color: #2d3748; /* Dark card background */
+            border-radius: 1.25rem; /* More rounded */
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4); /* Deeper shadow for elevation */
+            padding: 3rem 3.5rem; /* More internal padding */
+            text-align: center;
+            width: 100%;
+            max-width: 750px; /* Slightly wider card */
+            border: 1px solid #4a5568; /* Subtle border for definition */
+        }
+        .btn {
+            background-color: #667eea; /* Lighter indigo for contrast */
+            color: white;
+            padding: 1rem 2rem; /* Larger padding */
+            border-radius: 0.75rem; /* More rounded button */
+            font-weight: 700; /* Bolder text */
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3); /* Button shadow */
+            border: none; /* Remove default border */
+        }
+        .btn:hover {
+            background-color: #7f9cf5; /* Lighter on hover */
+            transform: translateY(-2px); /* Slight lift */
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); /* Enhanced shadow on hover */
+        }
+        input[type="text"] {
+            background-color: #4a5568; /* Darker input background */
+            color: #e2e8f0; /* Light text in input */
+            border: 1px solid #718096; /* Gray border */
+            border-radius: 0.625rem; /* Slightly rounded */
+            padding: 1rem 1.25rem;
+            width: 100%;
+            font-size: 1.05rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            max-width: 450px; /* Slightly wider input */
+        }
+        input[type="text"]::placeholder {
+            color: #a0aec0; /* Lighter placeholder text */
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #9f7aea; /* Purple on focus */
+            box-shadow: 0 0 0 4px rgba(159, 122, 234, 0.3); /* Purple focus ring */
+            background-color: #2d3748; /* Slightly darker on focus */
+        }
+        #loading-indicator {
+            display: none;
+            color: #9f7aea; /* Purple loading text */
+            font-weight: 600;
+            margin-top: 1.75rem;
+            font-size: 1.15rem;
+        }
+        .forecast-results {
+            margin-top: 2.5rem;
+            padding: 2rem;
+            background-color: #ffffff; /* WHITE BACKGROUND */
+            border-radius: 1rem;
+            text-align: left;
+            border: 1px solid #e2e8f0; /* Lighter border for contrast */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15); /* Inner shadow */
+        }
+        .forecast-results h2 { /* Targeting h2 specifically within forecast-results */
+            color: #1a202c; /* Dark text for h2 */
+        }
+        .forecast-results ul { /* Targeting ul specifically within forecast-results */
+            color: #4a5568; /* Darker text for list items */
+        }
+        .forecast-results .text-indigo-700 { /* Targeting ticker symbol in forecast-results */
+            color: #420067; /* Dark purple/blue for contrast */
+        }
+        #plot-container {
+            margin-top: 2.5rem;
+            background-color: #2d3748; /* Dark plot container background */
+            border-radius: 1rem;
+            padding: 1.25rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid #4a5568;
+        }
+        #prediction-plot {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.75rem; /* Rounded image corners */
+            border: 1px solid #4a5568; /* Subtle border for plot */
+        }
+        .options-section {
+            background-color: #2d3748; /* Dark options background */
+            border-radius: 1rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            padding: 1.75rem;
+            margin-top: 2.5rem;
+            text-align: left;
+            border: 1px solid #4a5568;
+            display: none; /* Hidden by default */
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .option-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #4a5568; /* Darker border */
+            color: #cbd5e0; /* Slightly darker light text */
+        }
+        .option-item:last-child {
+            border-bottom: none;
+        }
+        .option-item button {
+            background-color: #805ad5; /* Purple button */
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.4rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .option-item button:hover {
+            background-color: #9f7aea; /* Lighter purple on hover */
+            transform: translateY(-1px);
+        }
+        /* Specific colors for default Tailwind classes outside of forecast-results if needed */
+        .text-indigo-700 {
+            color: #9f7aea; /* Adjusted primary color for dark theme general use */
+        }
+        .text-gray-800 {
+            color: #edf2f7; /* Very light text for main headings general use */
+        }
+        .text-gray-600 {
+            color: #a0aec0; /* Medium light text for descriptions general use */
+        }
+        .text-red-600 {
+            color: #fc8181; /* Lighter red for errors general use */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-title">Stock Insight</div>
+    </div>
+
+    <div class="main-content">
+        <div class="card">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4">Market Outlook & Forecast</h1>
+            <p class="text-md sm:text-lg text-gray-600 mb-6">Enter a stock or index ticker symbol to get a 5-day price prediction.</p>
+
+            <form id="prediction-form" class="mb-8 flex flex-col sm:flex-row items-center justify-center space-y-5 sm:space-y-0 sm:space-x-5">
+                <input type="text" id="stock-name" name="stock_name" placeholder="e.g., AAPL, GOOG, ^NSEI" class="flex-grow">
+                <button type="submit" class="btn">Predict Price</button>
+            </form>
+
+            <div id="loading-indicator">
+                <p>Analyzing market data and generating forecast...</p>
+            </div>
+
+            <div id="results" class="hidden">
+                <div class="forecast-results">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-3">5-Day Forecast for <span id="ticker-symbol" class="text-indigo-700"></span></h2>
+                    <ul id="forecast-list" class="list-none p-0 text-gray-600 space-y-1.5 text-left">
+                        <!-- Forecast items will be inserted here by JavaScript -->
+                    </ul>
+                </div>
+                <div id="plot-container">
+                    <img id="prediction-plot" src="" alt="Stock Price Prediction Plot">
+                </div>
+            </div>
+            <div id="error-message" class="hidden mt-4 text-red-600 font-semibold text-base"></div>
+
+            <!-- Section for Stock Options -->
+            <div id="options-section" class="options-section">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Please choose a stock from the list below:</h2>
+                <ul id="options-list" class="options-list">
+                    <!-- Options will be populated here by JavaScript -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const predictionForm = document.getElementById('prediction-form');
+        const stockNameInput = document.getElementById('stock-name');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const resultsDiv = document.getElementById('results');
+        const errorMessageDiv = document.getElementById('error-message');
+        const optionsSection = document.getElementById('options-section');
+        const optionsList = document.getElementById('options-list');
+        const tickerSymbolSpan = document.getElementById('ticker-symbol');
+        const forecastListUl = document.getElementById('forecast-list');
+        const predictionPlotImg = document.getElementById('prediction-plot');
+
+        function hideAllSections() {
+            loadingIndicator.style.display = 'none';
+            resultsDiv.classList.add('hidden');
+            errorMessageDiv.classList.add('hidden');
+            optionsSection.style.display = 'none';
+        }
+
+        async function handleSubmit(event, selectedTicker = null) {
+            event.preventDefault(); // Prevent default form submission for the initial trigger
+
+            hideAllSections();
+            loadingIndicator.style.display = 'block';
+
+            const stockName = stockNameInput.value;
+            const formData = new URLSearchParams();
+            formData.append('stock_name', stockName);
+            if (selectedTicker) {
+                formData.append('selected_ticker', selectedTicker);
+            }
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData.toString()
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    if (data.type === 'options') {
+                        // Display options for user to choose
+                        optionsList.innerHTML = ''; // Clear previous options
+                        if (data.options && data.options.length > 0) {
+                            data.options.forEach(option => {
+                                const listItem = document.createElement('li');
+                                listItem.classList.add('option-item');
+                                listItem.innerHTML = `
+                                    <span>${option.symbol} - ${option.longname} (${option.exchange})</span>
+                                    <button data-ticker="${option.symbol}">Select</button>
+                                `;
+                                const selectButton = listItem.querySelector('button');
+                                selectButton.addEventListener('click', (e) => {
+                                    e.preventDefault(); 
+                                    handleSubmit(e, e.target.dataset.ticker);
+                                });
+                                optionsList.appendChild(listItem);
+                            });
+                            optionsSection.style.display = 'block';
+                        } else {
+                            errorMessageDiv.textContent = `No detailed options found for '${stockName}'. Please try a more specific query.`;
+                            errorMessageDiv.classList.remove('hidden');
+                        }
+
+                    } else if (data.type === 'prediction') {
+                        // Display final prediction results
+                        tickerSymbolSpan.textContent = data.ticker;
+                        forecastListUl.innerHTML = '';
+                        data.forecast.forEach((day, index) => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = `Day ${index + 1}: ${day}`;
+                            forecastListUl.appendChild(listItem);
+                        });
+                        predictionPlotImg.src = `data:image/png;base64,${data.plot_image}`;
+                        resultsDiv.classList.remove('hidden');
+                    }
+                } else {
+                    errorMessageDiv.textContent = data.message || 'An unknown error occurred.';
+                    errorMessageDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error during prediction:', error);
+                errorMessageDiv.textContent = 'Failed to connect to the prediction service. Please try again later.';
+                errorMessageDiv.classList.remove('hidden');
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+
+        predictionForm.addEventListener('submit', handleSubmit);
+    </script>
+</body>
+</html>
