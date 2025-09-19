@@ -1,0 +1,26 @@
+# Python virtual environment
+venv/
+*.venv/
+env/
+.env/
+*/Lib/site-packages/  # This is crucial for your setup
+*.pyc
+__pycache__/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs and databases
+*.log
+*.db
+*.sqlite3
+
+# Plot images (if you were saving them locally)
+*.png
+*.jpg
+*.jpeg
