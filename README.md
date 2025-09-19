@@ -69,7 +69,7 @@ Follow these steps to set up and run the project on your local machine.
 * Git
 
 1. Clone the Repository First, clone the project repository from GitHub:
-git clone https://github.com/WishchalSingh-Sudo/Stock-Prediction-Flask-App.git cd Stock-Prediction-Flask-App
+git clone https://github.com/Yash961-debug/-Stock-Prediction-Flask-App cd Stock-Prediction-Flask-App
 
 2. Set Up Virtual Environment (Recommended) It's highly recommended to use a virtual environment to manage dependencies:
 
