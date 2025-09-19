@@ -57,3 +57,54 @@ The app offers an **interactive, dark-themed UI** for dynamic stock search and v
 - **JavaScript (ES6+)**: Client-side interactivity, async requests (`fetch API`), and dynamic UI updates  
 
 ---
+
+# How to Run Locally
+Follow these steps to set up and run the project on your local machine.
+
+## Prerequisites 
+* Python 3.8+
+
+* pip (Python package installer)
+
+* Git
+
+1. Clone the Repository First, clone the project repository from GitHub:
+git clone https://github.com/WishchalSingh-Sudo/Stock-Prediction-Flask-App.git cd Stock-Prediction-Flask-App
+
+2. Set Up Virtual Environment (Recommended) It's highly recommended to use a virtual environment to manage dependencies:
+
+## Create a virtual environment
+python -m venv venv
+
+# Activate the virtual environment
+## On Windows:
+.\venv\Scripts\activate
+
+## On macOS/Linux:
+source venv/bin/activate
+
+3. Install Dependencies Install all required Python packages:
+pip install -r requirements.txt
+
+4. Run the Flask Application Start the Flask development server:
+python app.py
+
+You should see output similar to this:
+
+* Running on http://127.0.0.1:8000/ (Press CTRL+C to quit)
+  
+5. Access the Application Open your web browser and navigate to the address provided by Flask, usually:
+http://127.0.0.1:8000/
+
+You can now use the application to get stock price predictions!
+
+# Deployment Considerations (Future Steps)
+For production deployment, consider:
+
+* Disabling Flask debug mode.
+
+* Using a production-ready WSGI server like Gunicorn.
+
+* Deploying to platforms like Heroku, Render, AWS Elastic Beanstalk, or DigitalOcean.
+
+* Optimizing model training (e.g., training models offline and loading them on startup) to improve response times for concurrent users.
